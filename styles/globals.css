@@ -165,3 +165,19 @@ body::before {
   animation: floatGlow 20s ease-in-out infinite;
   z-index: -1;
 }
+/* ================= PAGE TRANSITIONS ================= */
+
+.page-wrap {
+  animation: pageFade 0.5s ease;
+}
+
+@keyframes pageFade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
