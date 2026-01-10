@@ -1,11 +1,24 @@
-export default async function About() {
-  const res = await fetch("https://tinto-entertainment.vercel.app/api/about", { cache: "no-store" })
-  const data = await res.json()
-
+export default function AboutPage() {
   return (
-    <main style={{ padding: 20 }}>
-      <h2>{data.title}</h2>
-      <p>{data.description}</p>
+    <main style={{ padding: "40px", maxWidth: 900, margin: "auto" }}>
+      <h1>About Tinto Entertainment</h1>
+
+      <p>
+        Tinto Entertainment is a premium event and entertainment company
+        specializing in concerts, cultural events, private celebrations,
+        and large-scale productions across India.
+      </p>
+
+      <p>
+        With a passion for creativity and flawless execution, we deliver
+        unforgettable experiences through music, lighting, production,
+        and event management.
+      </p>
+
+      <p>
+        From New Year celebrations to weddings, college fests, and
+        corporate events — Tinto Entertainment brings ideas to life.
+      </p>
     </main>
   )
 }
