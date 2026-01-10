@@ -138,3 +138,30 @@ footer {
   color: var(--muted);
   font-size: 14px;
 }
+/* ================= FESTIVAL MOTION BACKGROUND ================= */
+
+@keyframes floatGlow {
+  0% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(-40px) translateX(30px);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.4;
+  }
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(250,204,21,0.15), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(250,204,21,0.1), transparent 40%);
+  animation: floatGlow 20s ease-in-out infinite;
+  z-index: -1;
+}
