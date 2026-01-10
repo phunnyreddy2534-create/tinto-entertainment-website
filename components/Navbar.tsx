@@ -5,18 +5,22 @@ import { usePathname } from "next/navigation";
 
 const links = [
   { name: "Home", path: "/" },
-  { name: "About", path: "/about" },
-  { name: "Upcoming", path: "/events/upcoming" },
-  { name: "Past", path: "/events/past" },
+  { name: "About", path: "/about/" },
+  { name: "Upcoming", path: "/upcoming/" },
+  { name: "Past", path: "/past/" },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
 
+  // normalize path for static export
+  const cleanPath = pathname.endsWith("/") ? pathname : pathname + "/";
+
   return (
     <nav style={navStyle}>
       {links.map((link) => {
-        const active = pathname === link.path;
+        const active = cleanPath === link.path;
+
         return (
           <Link key={link.path} href={link.path} style={linkStyle}>
             <span
