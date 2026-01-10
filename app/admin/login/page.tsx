@@ -11,7 +11,6 @@ export default function AdminLogin() {
       method: "POST",
       body: JSON.stringify({ email }),
     });
-
     const data = await res.json();
     setMsg(data.message);
   }
@@ -25,13 +24,15 @@ export default function AdminLogin() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-      <button style={btn} onClick={sendLink}>Send Login Link</button>
+      <button style={btn} onClick={sendLink}>
+        Send Login Link
+      </button>
       <p>{msg}</p>
     </div>
   );
 }
 
-const wrap = {
+const wrap: React.CSSProperties = {
   minHeight: "100vh",
   display: "flex",
   flexDirection: "column",
@@ -40,13 +41,13 @@ const wrap = {
   gap: 20,
 };
 
-const input = {
+const input: React.CSSProperties = {
   padding: 14,
   width: 300,
   borderRadius: 10,
 };
 
-const btn = {
+const btn: React.CSSProperties = {
   padding: "12px 24px",
   background: "#facc15",
   border: "none",
