@@ -2,21 +2,31 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function Navbar() {
-  const path = usePathname();
+const navItems = [
+  { name: "Home", path: "/" },
+  { name: "About", path: "/about/" },
+  { name: "Upcoming", path: "/upcoming/" },
+  { name: "Past", path: "/past/" },
+];
 
-  const linkStyle = (p: string) => ({
-    color: path === p ? "#facc15" : "#888",
-    borderBottom: path === p ? "2px solid #facc15" : "none",
-    paddingBottom: "4px",
-  });
+export default function Navbar() {
+  const pathname = usePathname();
 
   return (
-    <nav style={{ padding: 16, textAlign: "center" }}>
-      <Link href="/" style={linkStyle("/")}>Home</Link>{" | "}
-      <Link href="/about/" style={linkStyle("/about")}>About</Link>{" | "}
-      <Link href="/upcoming/" style={linkStyle("/upcoming")}>Upcoming</Link>{" | "}
-      <Link href="/past/" style={linkStyle("/past")}>Past</Link>
+    <nav className="nav">
+      {navItems.map((item) => {
+        const isActive = pathname === item.path;
+
+        return (
+          <Link
+            key={item.path}
+            href={item.path}
+            className={`nav-link ${isActive ? "active" : ""}`}
+          >
+            {item.name}
+          </Link>
+        );
+      })}
     </nav>
   );
 }
