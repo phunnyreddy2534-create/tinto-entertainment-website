@@ -1,42 +1,55 @@
-"use client"
-import { useState } from "react"
+"use client";
+import { useState } from "react";
 
 export default function AdminLogin() {
-  const [email, setEmail] = useState("")
-  const [link, setLink] = useState("")
+  const [email, setEmail] = useState("");
+  const [msg, setMsg] = useState("");
 
-  async function login() {
-  const res = await fetch("/api/auth/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email })
-  })
+  async function sendLink() {
+    setMsg("Sending link...");
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ email }),
+    });
 
-  if (!res.ok) {
-    alert("Not authorized")
-    return
+    const data = await res.json();
+    setMsg(data.message);
   }
 
-  const data = await res.json()
-  setLink(data.link)
-}
-  
-
   return (
-    <main style={{ padding: 20 }}>
-      <h2>Admin Login</h2>
+    <div style={wrap}>
+      <h1>Tinto Admin Login</h1>
       <input
-        placeholder="Admin Email"
-        onChange={e => setEmail(e.target.value)}
+        style={input}
+        placeholder="tintoentertainmentindia@gmail.com"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
       />
-      <br /><br />
-      <button onClick={login}>Send Magic Link</button>
-
-      {link && (
-        <p>
-          <a href={link}>Click here to login</a>
-        </p>
-      )}
-    </main>
-  )
+      <button style={btn} onClick={sendLink}>Send Login Link</button>
+      <p>{msg}</p>
+    </div>
+  );
 }
+
+const wrap = {
+  minHeight: "100vh",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: 20,
+};
+
+const input = {
+  padding: 14,
+  width: 300,
+  borderRadius: 10,
+};
+
+const btn = {
+  padding: "12px 24px",
+  background: "#facc15",
+  border: "none",
+  borderRadius: 10,
+  fontWeight: 700,
+};
