@@ -1,3 +1,4 @@
+export const dynamic = "force-static";
 export default function Past() {
   return (
     <div style={{ padding: 30 }}>
