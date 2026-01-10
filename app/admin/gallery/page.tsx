@@ -3,34 +3,25 @@ import { useState } from "react";
 
 export default function GalleryAdmin() {
   const [link, setLink] = useState("");
-  const [msg, setMsg] = useState("");
 
   async function save() {
     await fetch("/api/gallery", {
       method: "POST",
       body: JSON.stringify({ link }),
     });
-    setMsg("Saved!");
+    alert("Saved");
   }
 
   return (
     <div style={{ padding: 40 }}>
-      <h1>Gallery</h1>
-      <p>Paste Google Drive folder link:</p>
-
+      <h2>Gallery Drive Link</h2>
       <input
+        style={{ padding: 10, width: 400 }}
         value={link}
         onChange={(e) => setLink(e.target.value)}
-        style={{
-          width: "100%",
-          padding: 12,
-          borderRadius: 8,
-          marginBottom: 10,
-        }}
+        placeholder="Paste Google Drive Link"
       />
-
       <button onClick={save}>Save</button>
-      <p>{msg}</p>
     </div>
   );
 }
