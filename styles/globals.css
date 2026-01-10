@@ -1,63 +1,53 @@
 :root {
   --primary: #facc15;
+  --bg: #000;
+  --card: #111;
+  --text: #fff;
 }
 
+/* Base */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0b0b0b;
-  color: white;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
 }
 
+/* Links */
 a {
   color: var(--primary);
   text-decoration: none;
 }
 
+/* Buttons */
 button {
   background: var(--primary);
   border: none;
   padding: 10px 16px;
   cursor: pointer;
   font-weight: bold;
+  border-radius: 8px;
 }
+
+/* Premium Event Cards */
 .card {
-  background: #111;
+  background: var(--card);
   padding: 20px;
-  border-radius: 12px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 14px;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 
+/* Desktop hover animation */
 .card:hover {
-  transform: translateY(-6px) rotateX(3deg);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 25px 60px rgba(250, 204, 21, 0.15);
 }
 
+/* Mobile safe */
 @media (hover: none) {
   .card:hover {
     transform: none;
-    box-shadow: none;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
   }
-}
-body {
-  background: #000;
-  color: #fff;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont;
-}
-
-a {
-  color: #f5c400;
-  text-decoration: none;
-}
-
-.card {
-  background: #111;
-  border-radius: 14px;
-  padding: 20px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(245, 196, 0, 0.15);
 }
