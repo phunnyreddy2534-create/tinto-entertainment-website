@@ -14,9 +14,9 @@ export default function Navbar() {
   return (
     <nav style={{ padding: 16, textAlign: "center" }}>
       <Link href="/" style={linkStyle("/")}>Home</Link>{" | "}
-      <Link href="/about" style={linkStyle("/about")}>About</Link>{" | "}
-      <Link href="/upcoming" style={linkStyle("/upcoming")}>Upcoming</Link>{" | "}
-      <Link href="/past" style={linkStyle("/past")}>Past</Link>
+      <Link href="/about/" style={linkStyle("/about")}>About</Link>{" | "}
+      <Link href="/upcoming/" style={linkStyle("/upcoming")}>Upcoming</Link>{" | "}
+      <Link href="/past/" style={linkStyle("/past")}>Past</Link>
     </nav>
   );
 }
