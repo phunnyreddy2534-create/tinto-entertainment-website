@@ -16,3 +16,15 @@ export function getSettings() {
 export function setColor(color: string) {
   settings.color = color
 }
+let about = {
+  title: "About Tinto Entertainment",
+  description: "We organize premium events and concerts."
+}
+
+export function getAbout() {
+  return about
+}
+
+export function updateAbout(data: any) {
+  about = data
+}
