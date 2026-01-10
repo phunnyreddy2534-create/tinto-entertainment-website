@@ -21,3 +21,21 @@ button {
   cursor: pointer;
   font-weight: bold;
 }
+.card {
+  background: #111;
+  padding: 20px;
+  border-radius: 12px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px) rotateX(3deg);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+@media (hover: none) {
+  .card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
