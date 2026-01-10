@@ -1,3 +1,4 @@
+export const dynamic = "force-static";
 const events = [
   { title: "New Year Bash", place: "Hyderabad", type: "Live DJ Night" },
   { title: "College Fest", place: "Telangana", type: "Celebrity Performance" },
