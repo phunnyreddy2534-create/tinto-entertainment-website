@@ -1,7 +1,7 @@
 export default function UpcomingEvents() {
   return (
-    <main style={{ padding: 20 }}>
-      <h2>Upcoming Events</h2>
+    <main style={{ padding: 40 }}>
+      <h1>Upcoming Events</h1>
       <p>All upcoming events will appear here.</p>
     </main>
   )
