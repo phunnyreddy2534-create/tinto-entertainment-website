@@ -1,10 +1,11 @@
-export default function About() {
+export default async function About() {
+  const res = await fetch("https://tinto-entertainment.vercel.app/api/about", { cache: "no-store" })
+  const data = await res.json()
+
   return (
     <main style={{ padding: 20 }}>
-      <h2>About Us</h2>
-      <p>We organize concerts, festivals, weddings and premium events.</p>
-      <h3>Our Team</h3>
-      <p>Professional event planners & creatives.</p>
+      <h2>{data.title}</h2>
+      <p>{data.description}</p>
     </main>
   )
 }
