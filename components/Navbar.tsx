@@ -9,6 +9,7 @@ const links = [
   { name: "About", path: "/about/" },
   { name: "Upcoming", path: "/upcoming/" },
   { name: "Past", path: "/past/" },
+  { name: "Gallery", path: "/gallery/" },
 ];
 
 export default function Navbar() {
@@ -18,9 +19,7 @@ export default function Navbar() {
   const cleanPath = pathname.endsWith("/") ? pathname : pathname + "/";
 
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
+    const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -30,7 +29,7 @@ export default function Navbar() {
       style={{
         ...navStyle,
         background: scrolled
-          ? "rgba(0,0,0,0.85)"
+          ? "rgba(0,0,0,0.88)"
           : "rgba(0,0,0,0.55)",
         boxShadow: scrolled
           ? "0 10px 40px rgba(0,0,0,0.6)"
@@ -49,7 +48,7 @@ export default function Navbar() {
                 ...textStyle,
                 color: active ? "#facc15" : "#aaa",
                 textShadow: active
-                  ? "0 0 12px rgba(250,204,21,0.8)"
+                  ? "0 0 14px rgba(250,204,21,0.9)"
                   : "none",
               }}
             >
@@ -76,7 +75,7 @@ export default function Navbar() {
 const navStyle: React.CSSProperties = {
   display: "flex",
   justifyContent: "center",
-  gap: "32px",
+  gap: "28px",
   padding: "18px 0",
   position: "sticky",
   top: 0,
@@ -90,7 +89,7 @@ const glowBar: React.CSSProperties = {
   position: "absolute",
   inset: 0,
   background:
-    "radial-gradient(circle at 50% -40%, rgba(250,204,21,0.18), transparent 60%)",
+    "radial-gradient(circle at 50% -40%, rgba(250,204,21,0.2), transparent 60%)",
   pointerEvents: "none",
 };
 
@@ -115,7 +114,7 @@ const underlineStyle: React.CSSProperties = {
   height: 3,
   background: "linear-gradient(90deg, #facc15, #fbbf24)",
   borderRadius: 10,
-  boxShadow: "0 0 16px rgba(250,204,21,0.9)",
+  boxShadow: "0 0 18px rgba(250,204,21,1)",
   transition: "all 0.4s ease",
   transformOrigin: "center",
 };
