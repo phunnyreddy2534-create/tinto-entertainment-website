@@ -39,3 +39,25 @@ button {
     box-shadow: none;
   }
 }
+body {
+  background: #000;
+  color: #fff;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+}
+
+a {
+  color: #f5c400;
+  text-decoration: none;
+}
+
+.card {
+  background: #111;
+  border-radius: 14px;
+  padding: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(245, 196, 0, 0.15);
+}
