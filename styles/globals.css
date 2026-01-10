@@ -1,0 +1,23 @@
+:root {
+  --primary: #facc15;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b0b0b;
+  color: white;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+button {
+  background: var(--primary);
+  border: none;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: bold;
+}
