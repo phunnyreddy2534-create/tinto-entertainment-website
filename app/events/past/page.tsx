@@ -1,7 +1,7 @@
 export default function PastEvents() {
   return (
-    <main style={{ padding: 20 }}>
-      <h2>Past Events</h2>
+    <main style={{ padding: 40 }}>
+      <h1>Past Events</h1>
       <p>Our successfully completed events.</p>
     </main>
   )
