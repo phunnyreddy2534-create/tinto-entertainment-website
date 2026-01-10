@@ -1,11 +1,16 @@
 export default function HomePage() {
   return (
     <main className="page">
+      <style>{heroPulse}</style>
+
       {/* HERO */}
       <section style={hero}>
         <div style={heroGlow} />
 
-        <h1 style={heroTitle}>Tinto Entertainment</h1>
+        <h1 style={{ ...heroTitle, animation: "heroPulse 4s ease-in-out infinite" }}>
+          Tinto Entertainment
+        </h1>
+
         <p style={heroSubtitle}>
           Premium Event & Festival Experience
         </p>
@@ -57,6 +62,16 @@ export default function HomePage() {
   );
 }
 
+/* ================== ANIMATIONS ================== */
+
+const heroPulse = `
+@keyframes heroPulse {
+  0% { text-shadow: 0 0 0 rgba(250,204,21,0); }
+  50% { text-shadow: 0 0 40px rgba(250,204,21,0.7); }
+  100% { text-shadow: 0 0 0 rgba(250,204,21,0); }
+}
+`;
+
 /* ================== STYLES ================== */
 
 const hero = {
@@ -75,7 +90,7 @@ const heroGlow = {
   inset: 0,
   background:
     "radial-gradient(circle at 50% 30%, rgba(250,204,21,0.35), transparent 60%)",
-  filter: "blur(80px)",
+  filter: "blur(90px)",
 };
 
 const heroTitle = {
