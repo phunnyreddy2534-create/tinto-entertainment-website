@@ -1,8 +1,8 @@
-export default function PastEvents() {
+export default function Past() {
   return (
-    <main style={{ padding: 40 }}>
+    <div style={{ padding: 30 }}>
       <h1>Past Events</h1>
-      <p>Our successfully completed events.</p>
-    </main>
-  )
+      <p>Our successfully completed premium events.</p>
+    </div>
+  );
 }
