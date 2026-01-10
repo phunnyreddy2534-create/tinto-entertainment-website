@@ -6,14 +6,21 @@ export default function AdminLogin() {
   const [link, setLink] = useState("")
 
   async function login() {
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      body: JSON.stringify({ email })
-    })
-    const data = await res.json()
-    if (data.link) setLink(data.link)
-    else alert("Not authorized")
+  const res = await fetch("/api/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email })
+  })
+
+  if (!res.ok) {
+    alert("Not authorized")
+    return
   }
+
+  const data = await res.json()
+  setLink(data.link)
+}
+  
 
   return (
     <main style={{ padding: 20 }}>
