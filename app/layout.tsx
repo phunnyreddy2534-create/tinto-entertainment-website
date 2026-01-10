@@ -4,10 +4,15 @@ import Footer from "../components/Footer"
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html>
+    <html lang="en">
       <body>
         <Navbar />
-        {children}
+
+        {/* Page transition wrapper */}
+        <div className="page-wrap">
+          {children}
+        </div>
+
         <Footer />
       </body>
     </html>
