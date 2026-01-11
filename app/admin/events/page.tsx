@@ -1,34 +1,34 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from "react";
-import { useBrand } from "../../lib/useBrand";
+import { useEffect, useState } from "react"
+import { useBrand } from "../../../lib/useBrand"
 
 type Event = {
-  id: string;
-  title: string;
-  date: string;
-  time: string;
-  location: string;
-  type: string;
-  shortDesc: string;
-  fullDesc: string;
-  cover: string;
-  gallery: string;
-  status: "upcoming" | "past";
-};
+  id: string
+  title: string
+  date: string
+  time: string
+  location: string
+  type: string
+  shortDesc: string
+  fullDesc: string
+  cover: string
+  gallery: string
+  status: "upcoming" | "past"
+}
 
 export default function AdminEvents() {
-  const brand = useBrand();
-  const [events, setEvents] = useState<Event[]>([]);
-  const [form, setForm] = useState<Partial<Event>>({ status: "upcoming" });
+  const brand = useBrand()
+  const [events, setEvents] = useState<Event[]>([])
+  const [form, setForm] = useState<Partial<Event>>({ status: "upcoming" })
 
   useEffect(() => {
-    load();
-  }, []);
+    load()
+  }, [])
 
   async function load() {
-    const res = await fetch("/api/events");
-    setEvents(await res.json());
+    const res = await fetch("/api/events")
+    setEvents(await res.json())
   }
 
   async function save() {
@@ -36,9 +36,9 @@ export default function AdminEvents() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
-    });
-    setForm({ status: "upcoming" });
-    load();
+    })
+    setForm({ status: "upcoming" })
+    load()
   }
 
   async function update(id: string, data: Partial<Event>) {
@@ -46,8 +46,8 @@ export default function AdminEvents() {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id, ...data }),
-    });
-    load();
+    })
+    load()
   }
 
   async function remove(id: string) {
@@ -55,15 +55,14 @@ export default function AdminEvents() {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),
-    });
-    load();
+    })
+    load()
   }
 
   return (
     <main style={{ padding: 40, maxWidth: 1000, margin: "0 auto", color: brand?.text }}>
       <h1 style={{ color: brand?.primary }}>Live Events Manager</h1>
 
-      {/* ADD */}
       <section style={card(brand)}>
         <h3>Add / Edit Event</h3>
 
@@ -77,14 +76,11 @@ export default function AdminEvents() {
         <Input label="Cover Image URL" onChange={v => setForm({ ...form, cover: v })} />
         <Input label="Gallery (Drive link)" onChange={v => setForm({ ...form, gallery: v })} />
 
-        <button style={btn(brand)} onClick={save}>
-          Save Event
-        </button>
+        <button style={btn(brand)} onClick={save}>Save Event</button>
 
         {form.cover && <img src={form.cover} style={{ width: "100%", borderRadius: 10 }} />}
       </section>
 
-      {/* LIST */}
       <h3 style={{ marginTop: 50 }}>All Events</h3>
 
       {events.map(e => (
@@ -96,18 +92,26 @@ export default function AdminEvents() {
           <img src={e.cover} style={{ width: "100%", borderRadius: 10 }} />
 
           <div style={{ display: "flex", gap: 10 }}>
-            <button style={btn(brand)} onClick={() => update(e.id, { status: e.status === "upcoming" ? "past" : "upcoming" })}>
+            <button
+              style={btn(brand)}
+              onClick={() =>
+                update(e.id, { status: e.status === "upcoming" ? "past" : "upcoming" })
+              }
+            >
               Move to {e.status === "upcoming" ? "Past" : "Upcoming"}
             </button>
 
-            <button onClick={() => remove(e.id)} style={{ background: brand?.accent, color: "#fff", padding: 10, borderRadius: 8 }}>
+            <button
+              onClick={() => remove(e.id)}
+              style={{ background: brand?.accent, color: "#fff", padding: 10, borderRadius: 8 }}
+            >
               Delete
             </button>
           </div>
         </div>
       ))}
     </main>
-  );
+  )
 }
 
 /* UI helpers */
@@ -126,7 +130,7 @@ const card = (b: any) => ({
   flexDirection: "column",
   gap: 10,
   boxShadow: `0 0 40px ${b?.primary}22`,
-});
+})
 
 const btn = (b: any) => ({
   background: `linear-gradient(135deg, ${b?.primary}, ${b?.accent})`,
@@ -135,4 +139,4 @@ const btn = (b: any) => ({
   border: "none",
   fontWeight: 700,
   cursor: "pointer",
-});
+})
