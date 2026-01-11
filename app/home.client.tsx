@@ -11,15 +11,12 @@ export default function HomeClient() {
 
   return (
     <main className="page">
-      <style>{`
-        @keyframes heroPulse {
-          0% { text-shadow: 0 0 0 ${brand.primary}00; }
-          50% { text-shadow: 0 0 50px ${brand.primary}; }
-          100% { text-shadow: 0 0 0 ${brand.primary}00; }
-        }
-      `}</style>
-
-      <section style={{ ...hero, background: brand.background }}>
+      <section
+        style={{
+          ...hero,
+          background: brand.background,
+        }}
+      >
         <div
           style={{
             ...heroGlow,
@@ -33,7 +30,7 @@ export default function HomeClient() {
           style={{
             ...heroTitle,
             color: brand.text,
-            animation: "heroPulse 4s ease-in-out infinite",
+            textShadow: `0 0 40px ${brand.primary}`,
           }}
         >
           Tinto Entertainment
