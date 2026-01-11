@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useBrand } from "../lib/useBrand";
 
 const links = [
   { name: "Home", path: "/" },
@@ -14,6 +15,7 @@ const links = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const brand = useBrand();
   const [scrolled, setScrolled] = useState(false);
 
   const cleanPath = pathname.endsWith("/") ? pathname : pathname + "/";
@@ -32,11 +34,16 @@ export default function Navbar() {
           ? "rgba(0,0,0,0.88)"
           : "rgba(0,0,0,0.55)",
         boxShadow: scrolled
-          ? "0 10px 40px rgba(0,0,0,0.6)"
+          ? `0 10px 40px rgba(0,0,0,0.6)`
           : "none",
       }}
     >
-      <div style={glowBar} />
+      <div
+        style={{
+          ...glowBar,
+          background: `radial-gradient(circle at 50% -40%, ${brand?.primary}55, transparent 60%)`,
+        }}
+      />
 
       {links.map((link) => {
         const active = cleanPath === link.path;
@@ -46,19 +53,20 @@ export default function Navbar() {
             <span
               style={{
                 ...textStyle,
-                color: active ? "#facc15" : "#aaa",
+                color: active ? brand?.primary || "#FFE53B" : "#aaa",
                 textShadow: active
-                  ? "0 0 14px rgba(250,204,21,0.9)"
+                  ? `0 0 16px ${brand?.primary}`
                   : "none",
               }}
             >
               {link.name}
             </span>
 
-            {/* Active underline */}
             <span
               style={{
                 ...underlineStyle,
+                background: `linear-gradient(90deg, ${brand?.primary}, ${brand?.accent})`,
+                boxShadow: `0 0 20px ${brand?.accent}`,
                 opacity: active ? 1 : 0,
                 transform: active ? "scaleX(1)" : "scaleX(0)",
               }}
@@ -88,8 +96,6 @@ const navStyle: React.CSSProperties = {
 const glowBar: React.CSSProperties = {
   position: "absolute",
   inset: 0,
-  background:
-    "radial-gradient(circle at 50% -40%, rgba(250,204,21,0.2), transparent 60%)",
   pointerEvents: "none",
 };
 
@@ -112,9 +118,7 @@ const underlineStyle: React.CSSProperties = {
   right: 0,
   bottom: -8,
   height: 3,
-  background: "linear-gradient(90deg, #facc15, #fbbf24)",
   borderRadius: 10,
-  boxShadow: "0 0 18px rgba(250,204,21,1)",
   transition: "all 0.4s ease",
   transformOrigin: "center",
 };
