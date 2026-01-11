@@ -1,71 +1,65 @@
-import { NextResponse } from "next/server";
-import { getEvents, saveEvents } from "../../../lib/storage";
-
-/*
-Event schema:
-{
-  id: string,
-  title: string,
-  date: string,
-  time: string,
-  location: string,
-  type: string,
-  shortDesc: string,
-  fullDesc: string,
-  cover: string,
-  gallery: string,
-  status: "upcoming" | "past"
-}
-*/
+import { NextResponse } from "next/server"
+import { getEvents, saveEvents } from "@/lib/storage"
 
 export async function GET() {
-  const events = getEvents();
-  return NextResponse.json(events);
+  try {
+    return NextResponse.json(getEvents())
+  } catch {
+    return NextResponse.json([])
+  }
 }
 
 export async function POST(req: Request) {
-  const data = await req.json();
-  const events = getEvents();
+  try {
+    const data = await req.json()
+    const events = getEvents()
 
-  const newEvent = {
-    id: crypto.randomUUID(),
-    title: data.title || "",
-    date: data.date || "",
-    time: data.time || "",
-    location: data.location || "",
-    type: data.type || "",
-    shortDesc: data.shortDesc || "",
-    fullDesc: data.fullDesc || "",
-    cover: data.cover || "",
-    gallery: data.gallery || "",
-    status: data.status || "upcoming",
-  };
+    const newEvent = {
+      id: crypto.randomUUID(),
+      title: data.title || "",
+      date: data.date || "",
+      time: data.time || "",
+      location: data.location || "",
+      type: data.type || "",
+      shortDesc: data.shortDesc || "",
+      fullDesc: data.fullDesc || "",
+      cover: data.cover || "",
+      gallery: data.gallery || "",
+      status: data.status || "upcoming",
+    }
 
-  events.push(newEvent);
-  saveEvents(events);
+    events.unshift(newEvent)
+    saveEvents(events)
 
-  return NextResponse.json({ success: true, event: newEvent });
+    return NextResponse.json({ success: true, event: newEvent })
+  } catch {
+    return NextResponse.json({ success: false })
+  }
 }
 
 export async function PUT(req: Request) {
-  const data = await req.json();
-  const events = getEvents();
+  try {
+    const data = await req.json()
+    const events = getEvents()
 
-  const index = events.findIndex((e: any) => e.id === data.id);
-  if (index === -1) {
-    return NextResponse.json({ error: "Event not found" }, { status: 404 });
+    const updated = events.map((e: any) =>
+      e.id === data.id ? { ...e, ...data } : e
+    )
+
+    saveEvents(updated)
+    return NextResponse.json({ success: true })
+  } catch {
+    return NextResponse.json({ success: false })
   }
-
-  events[index] = { ...events[index], ...data };
-  saveEvents(events);
-
-  return NextResponse.json({ success: true, event: events[index] });
 }
 
 export async function DELETE(req: Request) {
-  const { id } = await req.json();
-  const events = getEvents().filter((e: any) => e.id !== id);
-  saveEvents(events);
-
-  return NextResponse.json({ success: true });
+  try {
+    const { id } = await req.json()
+    const events = getEvents().filter((e: any) => e.id !== id)
+    saveEvents(events)
+    return NextResponse.json({ success: true })
+  } catch {
+    return NextResponse.json({ success: false })
+  }
 }
