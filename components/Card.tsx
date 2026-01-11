@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useBrand } from "../lib/useBrand";
 
 type Props = {
   title: string;
@@ -10,10 +11,11 @@ type Props = {
 
 export default function Card({ title, location, description }: Props) {
   const cardRef = useRef<HTMLDivElement>(null);
+  const brand = useBrand();
   const [style, setStyle] = useState({});
 
   function handleMove(e: React.MouseEvent) {
-    if (!cardRef.current) return;
+    if (!cardRef.current || !brand) return;
 
     const rect = cardRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -32,7 +34,7 @@ export default function Card({ title, location, description }: Props) {
         rotateY(${rotateY}deg)
         scale(1.05)
       `,
-      boxShadow: "0 40px 120px rgba(250,204,21,0.25)",
+      boxShadow: `0 40px 120px ${brand.primary}55`,
     });
   }
 
@@ -53,14 +55,26 @@ export default function Card({ title, location, description }: Props) {
       ref={cardRef}
       onMouseMove={handleMove}
       onMouseLeave={reset}
-      style={{ ...cardStyle, ...style }}
+      style={{
+        ...cardStyle,
+        border: `1px solid ${brand?.primary}33`,
+        ...style,
+      }}
     >
-      {/* Light beam */}
-      <div style={beam} />
+      <div
+        style={{
+          ...beam,
+          background: `radial-gradient(circle at 20% 0%, ${brand?.accent}33, transparent 55%)`,
+        }}
+      />
 
-      <h3 style={titleStyle}>{title}</h3>
-      <p style={locationStyle}>📍 {location}</p>
-      <p style={descStyle}>{description}</p>
+      <h3 style={{ ...titleStyle, color: brand?.text || "#fff" }}>{title}</h3>
+      <p style={{ ...locationStyle, color: brand?.primary }}>
+        📍 {location}
+      </p>
+      <p style={{ ...descStyle, color: brand?.text }}>
+        {description}
+      </p>
     </div>
   );
 }
@@ -74,7 +88,6 @@ const cardStyle: React.CSSProperties = {
   borderRadius: 22,
   padding: "28px",
   minHeight: 180,
-  border: "1px solid rgba(250,204,21,0.15)",
   boxShadow: "0 30px 60px rgba(0,0,0,0.6)",
   transition: "transform 0.15s ease, box-shadow 0.3s ease",
   overflow: "hidden",
@@ -83,8 +96,6 @@ const cardStyle: React.CSSProperties = {
 const beam: React.CSSProperties = {
   position: "absolute",
   inset: -50,
-  background:
-    "radial-gradient(circle at 20% 0%, rgba(250,204,21,0.22), transparent 55%)",
   pointerEvents: "none",
   animation: "beamMove 6s ease-in-out infinite",
 };
@@ -92,20 +103,17 @@ const beam: React.CSSProperties = {
 const titleStyle: React.CSSProperties = {
   fontSize: 20,
   fontWeight: 800,
-  color: "#fff",
   marginBottom: 12,
   letterSpacing: "-0.02em",
 };
 
 const locationStyle: React.CSSProperties = {
   fontSize: 14,
-  color: "#facc15",
   marginBottom: 10,
   fontWeight: 600,
 };
 
 const descStyle: React.CSSProperties = {
   fontSize: 14,
-  color: "rgba(255,255,255,0.8)",
   lineHeight: 1.7,
 };
