@@ -1,137 +1,135 @@
 import fs from "fs"
 import path from "path"
 
-const baseDir = process.env.VERCEL
-  ? "/tmp/tinto-data"
-  : path.join(process.cwd(), "data")
+/* ================= VERCEL SAFE STORAGE ================= */
 
-const dataDir = baseDir
-const eventsFile = path.join(dataDir, "events.json")
-const settingsFile = path.join(dataDir, "settings.json")
-const aboutFile = path.join(dataDir, "about.json")
-const brandFile = path.join(dataDir, "brand.json")
-const galleryFile = path.join(dataDir, "gallery.json")
+const baseDir =
+  process.env.VERCEL === "1"
+    ? "/tmp/tinto-data"
+    : path.join(process.cwd(), "data")
+
+const eventsFile = path.join(baseDir, "events.json")
+const settingsFile = path.join(baseDir, "settings.json")
+const aboutFile = path.join(baseDir, "about.json")
+const brandFile = path.join(baseDir, "brand.json")
+const galleryFile = path.join(baseDir, "gallery.json")
+const auditFile = path.join(baseDir, "audit.json")
+
+/* ================= CORE SAFE IO ================= */
+
+function safeRead(file: string, fallback: any) {
+  try {
+    if (!fs.existsSync(file)) return fallback
+    const raw = fs.readFileSync(file, "utf8")
+    if (!raw) return fallback
+    return JSON.parse(raw)
+  } catch {
+    return fallback
+  }
+}
+
+function safeWrite(file: string, data: any) {
+  try {
+    fs.writeFileSync(file, JSON.stringify(data, null, 2))
+  } catch {}
+}
 
 function ensureFiles() {
-  if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true })
+  try {
+    if (!fs.existsSync(baseDir)) fs.mkdirSync(baseDir, { recursive: true })
 
-  if (!fs.existsSync(eventsFile)) fs.writeFileSync(eventsFile, "[]")
-
-  if (!fs.existsSync(settingsFile))
-    fs.writeFileSync(settingsFile, JSON.stringify({ color: "#FFE53B" }, null, 2))
-
-  if (!fs.existsSync(aboutFile))
-    fs.writeFileSync(
-      aboutFile,
-      JSON.stringify(
-        {
-          title: "About Tinto Entertainment",
-          description: "We organize premium events and concerts.",
-        },
-        null,
-        2
-      )
-    )
-
-  if (!fs.existsSync(brandFile))
-    fs.writeFileSync(
-      brandFile,
-      JSON.stringify(
-        {
-          primary: "#FFE53B",
-          accent: "#FF005B",
-          glow: 0.8,
-          background: "linear-gradient(120deg,#FFE53B,#FF005B)",
-          text: "#ffffff",
-          logo: "/logo.png",
-        },
-        null,
-        2
-      )
-    )
-
-  if (!fs.existsSync(galleryFile))
-    fs.writeFileSync(galleryFile, JSON.stringify({ link: "" }, null, 2))
+    if (!fs.existsSync(eventsFile)) safeWrite(eventsFile, [])
+    if (!fs.existsSync(settingsFile)) safeWrite(settingsFile, { color: "#FFE53B" })
+    if (!fs.existsSync(aboutFile))
+      safeWrite(aboutFile, {
+        title: "About Tinto Entertainment",
+        description: "We organize premium events and concerts.",
+      })
+    if (!fs.existsSync(brandFile))
+      safeWrite(brandFile, {
+        primary: "#FFE53B",
+        accent: "#FF005B",
+        glow: 0.8,
+        background: "linear-gradient(120deg,#FFE53B,#FF005B)",
+        text: "#ffffff",
+        logo: "/logo.png",
+      })
+    if (!fs.existsSync(galleryFile)) safeWrite(galleryFile, { link: "" })
+    if (!fs.existsSync(auditFile)) safeWrite(auditFile, [])
+  } catch {}
 }
 
 /* ================= EVENTS ================= */
 
 export function getEvents() {
   ensureFiles()
-  return JSON.parse(fs.readFileSync(eventsFile, "utf8"))
+  return safeRead(eventsFile, [])
 }
 
 export function saveEvents(events: any[]) {
   ensureFiles()
-  fs.writeFileSync(eventsFile, JSON.stringify(events, null, 2))
+  safeWrite(eventsFile, events)
 }
 
 /* ================= BRAND ================= */
 
 export function getBrand() {
   ensureFiles()
-  return JSON.parse(fs.readFileSync(brandFile, "utf8"))
+  return safeRead(brandFile, {})
 }
 
 export function setBrand(data: any) {
   ensureFiles()
-  const brand = getBrand()
-  const updated = { ...brand, ...data }
-  fs.writeFileSync(brandFile, JSON.stringify(updated, null, 2))
+  const updated = { ...getBrand(), ...data }
+  safeWrite(brandFile, updated)
 }
 
 /* ================= SETTINGS ================= */
 
 export function getSettings() {
   ensureFiles()
-  return JSON.parse(fs.readFileSync(settingsFile, "utf8"))
+  return safeRead(settingsFile, { color: "#FFE53B" })
 }
 
 export function setColor(color: string) {
   ensureFiles()
-  const settings = getSettings()
-  settings.color = color
-  fs.writeFileSync(settingsFile, JSON.stringify(settings, null, 2))
+  safeWrite(settingsFile, { color })
 }
 
 /* ================= ABOUT ================= */
 
 export function getAbout() {
   ensureFiles()
-  return JSON.parse(fs.readFileSync(aboutFile, "utf8"))
+  return safeRead(aboutFile, {})
 }
 
 export function updateAbout(data: any) {
   ensureFiles()
-  fs.writeFileSync(aboutFile, JSON.stringify(data, null, 2))
+  safeWrite(aboutFile, data)
 }
 
 /* ================= GALLERY ================= */
 
 export function getGallery() {
   ensureFiles()
-  return JSON.parse(fs.readFileSync(galleryFile, "utf8"))
+  return safeRead(galleryFile, { link: "" })
 }
 
 export function setGallery(link: string) {
   ensureFiles()
-  fs.writeFileSync(galleryFile, JSON.stringify({ link }, null, 2))
+  safeWrite(galleryFile, { link })
 }
-/* ================= AUDIT ================= */
 
-const auditFile = path.join(dataDir, "audit.json")
+/* ================= AUDIT ================= */
 
 export function getAudit() {
   ensureFiles()
-  if (!fs.existsSync(auditFile)) {
-    fs.writeFileSync(auditFile, "[]")
-  }
-  return JSON.parse(fs.readFileSync(auditFile, "utf8"))
+  return safeRead(auditFile, [])
 }
 
 export function addAudit(entry: any) {
   ensureFiles()
   const logs = getAudit()
   logs.unshift(entry)
-  fs.writeFileSync(auditFile, JSON.stringify(logs, null, 2))
+  safeWrite(auditFile, logs)
 }
