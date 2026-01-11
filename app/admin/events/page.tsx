@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useBrand } from "../../lib/useBrand";
 
 type Event = {
   id: string;
@@ -17,17 +18,17 @@ type Event = {
 };
 
 export default function AdminEvents() {
+  const brand = useBrand();
   const [events, setEvents] = useState<Event[]>([]);
   const [form, setForm] = useState<Partial<Event>>({ status: "upcoming" });
 
   useEffect(() => {
-    loadEvents();
+    load();
   }, []);
 
-  async function loadEvents() {
+  async function load() {
     const res = await fetch("/api/events");
-    const data = await res.json();
-    setEvents(data);
+    setEvents(await res.json());
   }
 
   async function save() {
@@ -37,7 +38,7 @@ export default function AdminEvents() {
       body: JSON.stringify(form),
     });
     setForm({ status: "upcoming" });
-    loadEvents();
+    load();
   }
 
   async function update(id: string, data: Partial<Event>) {
@@ -46,7 +47,7 @@ export default function AdminEvents() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id, ...data }),
     });
-    loadEvents();
+    load();
   }
 
   async function remove(id: string) {
@@ -55,45 +56,51 @@ export default function AdminEvents() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),
     });
-    loadEvents();
+    load();
   }
 
   return (
-    <main style={{ padding: 30, maxWidth: 800, margin: "0 auto" }}>
-      <h1>Events Manager</h1>
+    <main style={{ padding: 40, maxWidth: 1000, margin: "0 auto", color: brand?.text }}>
+      <h1 style={{ color: brand?.primary }}>Live Events Manager</h1>
 
-      {/* ADD EVENT */}
-      <section style={card}>
-        <h3>Add Event</h3>
+      {/* ADD */}
+      <section style={card(brand)}>
+        <h3>Add / Edit Event</h3>
 
-        <input placeholder="Title" onChange={e => setForm({ ...form, title: e.target.value })} />
-        <input placeholder="Date" type="date" onChange={e => setForm({ ...form, date: e.target.value })} />
-        <input placeholder="Time" type="time" onChange={e => setForm({ ...form, time: e.target.value })} />
-        <input placeholder="Location" onChange={e => setForm({ ...form, location: e.target.value })} />
-        <input placeholder="Type (Concert, DJ, etc)" onChange={e => setForm({ ...form, type: e.target.value })} />
-        <input placeholder="Short Description" onChange={e => setForm({ ...form, shortDesc: e.target.value })} />
+        <Input label="Title" onChange={v => setForm({ ...form, title: v })} />
+        <Input label="Date" type="date" onChange={v => setForm({ ...form, date: v })} />
+        <Input label="Time" type="time" onChange={v => setForm({ ...form, time: v })} />
+        <Input label="Location" onChange={v => setForm({ ...form, location: v })} />
+        <Input label="Type" onChange={v => setForm({ ...form, type: v })} />
+        <Input label="Short Description" onChange={v => setForm({ ...form, shortDesc: v })} />
         <textarea placeholder="Full Description" onChange={e => setForm({ ...form, fullDesc: e.target.value })} />
-        <input placeholder="Cover Image URL" onChange={e => setForm({ ...form, cover: e.target.value })} />
-        <input placeholder="Gallery (Google Drive Link)" onChange={e => setForm({ ...form, gallery: e.target.value })} />
+        <Input label="Cover Image URL" onChange={v => setForm({ ...form, cover: v })} />
+        <Input label="Gallery (Drive link)" onChange={v => setForm({ ...form, gallery: v })} />
 
-        <button onClick={save}>Save Event</button>
+        <button style={btn(brand)} onClick={save}>
+          Save Event
+        </button>
+
+        {form.cover && <img src={form.cover} style={{ width: "100%", borderRadius: 10 }} />}
       </section>
 
-      {/* EVENT LIST */}
-      <h3 style={{ marginTop: 40 }}>All Events</h3>
+      {/* LIST */}
+      <h3 style={{ marginTop: 50 }}>All Events</h3>
 
       {events.map(e => (
-        <div key={e.id} style={card}>
+        <div key={e.id} style={card(brand)}>
           <b>{e.title}</b>
-          <div>{e.date} — {e.location}</div>
-          <small>{e.status}</small>
+          <div>{e.date} • {e.location}</div>
+          <div style={{ color: brand?.primary }}>{e.status.toUpperCase()}</div>
 
-          <div style={{ marginTop: 10 }}>
-            <button onClick={() => update(e.id, { status: e.status === "upcoming" ? "past" : "upcoming" })}>
+          <img src={e.cover} style={{ width: "100%", borderRadius: 10 }} />
+
+          <div style={{ display: "flex", gap: 10 }}>
+            <button style={btn(brand)} onClick={() => update(e.id, { status: e.status === "upcoming" ? "past" : "upcoming" })}>
               Move to {e.status === "upcoming" ? "Past" : "Upcoming"}
             </button>
 
-            <button onClick={() => remove(e.id)} style={{ marginLeft: 10 }}>
+            <button onClick={() => remove(e.id)} style={{ background: brand?.accent, color: "#fff", padding: 10, borderRadius: 8 }}>
               Delete
             </button>
           </div>
@@ -103,12 +110,29 @@ export default function AdminEvents() {
   );
 }
 
-const card = {
-  background: "#111",
+/* UI helpers */
+
+function Input({ label, onChange, type = "text" }: any) {
+  return <input placeholder={label} type={type} onChange={e => onChange(e.target.value)} />
+}
+
+const card = (b: any) => ({
+  background: "rgba(0,0,0,0.6)",
+  border: `1px solid ${b?.primary}33`,
   padding: 20,
-  borderRadius: 12,
+  borderRadius: 16,
   marginBottom: 20,
   display: "flex",
-  flexDirection: "column" as const,
+  flexDirection: "column",
   gap: 10,
-};
+  boxShadow: `0 0 40px ${b?.primary}22`,
+});
+
+const btn = (b: any) => ({
+  background: `linear-gradient(135deg, ${b?.primary}, ${b?.accent})`,
+  padding: "12px 20px",
+  borderRadius: 12,
+  border: "none",
+  fontWeight: 700,
+  cursor: "pointer",
+});
