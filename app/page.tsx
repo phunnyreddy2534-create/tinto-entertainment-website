@@ -1,59 +1,83 @@
+"use client";
+
+import { useBrand } from "../lib/useBrand";
+
 export default function HomePage() {
+  const brand = useBrand();
+
+  if (!brand) return null;
+
   return (
     <main className="page">
-      <style>{heroPulse}</style>
+      <style>{`
+      @keyframes heroPulse {
+        0% { text-shadow: 0 0 0 ${brand.primary}00; }
+        50% { text-shadow: 0 0 50px ${brand.primary}; }
+        100% { text-shadow: 0 0 0 ${brand.primary}00; }
+      }
+      `}</style>
 
       {/* HERO */}
-      <section style={hero}>
-        <div style={heroGlow} />
+      <section style={{ ...hero, background: brand.background }}>
+        <div
+          style={{
+            ...heroGlow,
+            background: `radial-gradient(circle at 50% 30%, ${brand.primary}55, transparent 60%)`,
+          }}
+        />
 
-        <h1 style={{ ...heroTitle, animation: "heroPulse 4s ease-in-out infinite" }}>
+        <img src={brand.logo} style={{ width: 140, marginBottom: 20 }} />
+
+        <h1
+          style={{
+            ...heroTitle,
+            color: brand.text,
+            animation: "heroPulse 4s ease-in-out infinite",
+          }}
+        >
           Tinto Entertainment
         </h1>
 
-        <p style={heroSubtitle}>
+        <p style={{ ...heroSubtitle, color: brand.text }}>
           Premium Event & Festival Experience
         </p>
 
         <div style={ctaWrap}>
-          <a href="/upcoming/" style={ctaPrimary}>View Upcoming Events</a>
-          <a href="/about/" style={ctaSecondary}>About Us</a>
-        </div>
-      </section>
+          <a
+            href="/upcoming/"
+            style={{
+              ...ctaPrimary,
+              background: `linear-gradient(135deg, ${brand.primary}, ${brand.accent})`,
+            }}
+          >
+            View Upcoming Events
+          </a>
 
-      {/* UPCOMING */}
-      <section style={section}>
-        <h2>Upcoming Events</h2>
-
-        <div style={grid}>
-          <div className="card">
-            <h3>New Year Bash</h3>
-            <p>📍 Hyderabad</p>
-            <p>🎧 DJ Night & Live Acts</p>
-          </div>
-
-          <div className="card">
-            <h3>College Fest</h3>
-            <p>📍 Telangana</p>
-            <p>🎤 Celebrity Performance</p>
-          </div>
-
-          <div className="card">
-            <h3>Wedding Night</h3>
-            <p>📍 Private Venue</p>
-            <p>💫 Full Event Production</p>
-          </div>
+          <a
+            href="/about/"
+            style={{
+              ...ctaSecondary,
+              border: `1px solid ${brand.primary}`,
+              color: brand.primary,
+            }}
+          >
+            About Us
+          </a>
         </div>
       </section>
 
       {/* CONTACT */}
       <section style={{ ...section, textAlign: "center" }}>
-        <h2>Contact</h2>
+        <h2 style={{ color: brand.primary }}>Contact</h2>
         <p>📞 +91 9392267226</p>
         <p>📧 tintoentertainmentindia@gmail.com</p>
         <p>
           📸{" "}
-          <a href="https://www.instagram.com/tintoentertainment" target="_blank">
+          <a
+            href="https://www.instagram.com/tintoentertainment"
+            target="_blank"
+            style={{ color: brand.accent }}
+          >
             @tintoentertainment
           </a>
         </p>
@@ -61,16 +85,6 @@ export default function HomePage() {
     </main>
   );
 }
-
-/* ================== ANIMATIONS ================== */
-
-const heroPulse = `
-@keyframes heroPulse {
-  0% { text-shadow: 0 0 0 rgba(250,204,21,0); }
-  50% { text-shadow: 0 0 40px rgba(250,204,21,0.7); }
-  100% { text-shadow: 0 0 0 rgba(250,204,21,0); }
-}
-`;
 
 /* ================== STYLES ================== */
 
@@ -88,13 +102,11 @@ const hero = {
 const heroGlow = {
   position: "absolute" as const,
   inset: 0,
-  background:
-    "radial-gradient(circle at 50% 30%, rgba(250,204,21,0.35), transparent 60%)",
-  filter: "blur(90px)",
+  filter: "blur(100px)",
 };
 
 const heroTitle = {
-  fontSize: "clamp(2.5rem, 6vw, 4rem)",
+  fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
   fontWeight: 900,
   letterSpacing: "-0.04em",
   zIndex: 1,
@@ -103,7 +115,7 @@ const heroTitle = {
 const heroSubtitle = {
   marginTop: 12,
   fontSize: "1.1rem",
-  opacity: 0.8,
+  opacity: 0.85,
   zIndex: 1,
 };
 
@@ -115,19 +127,17 @@ const ctaWrap = {
 };
 
 const ctaPrimary = {
-  background: "linear-gradient(135deg, #facc15, #fbbf24)",
-  padding: "14px 26px",
+  padding: "14px 28px",
   borderRadius: 14,
   color: "#000",
   fontWeight: 800,
   textDecoration: "none",
+  boxShadow: "0 0 40px rgba(0,0,0,0.4)",
 };
 
 const ctaSecondary = {
-  border: "1px solid rgba(250,204,21,0.5)",
-  padding: "14px 26px",
+  padding: "14px 28px",
   borderRadius: 14,
-  color: "#facc15",
   textDecoration: "none",
 };
 
@@ -135,11 +145,4 @@ const section = {
   padding: "80px 24px",
   maxWidth: 1100,
   margin: "0 auto",
-};
-
-const grid = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-  gap: 24,
-  marginTop: 30,
 };
