@@ -1,6 +1,6 @@
-export const dynamic = "force-dynamic";
-
 "use client";
+
+export const dynamic = "force-dynamic";
 
 import { useState } from "react";
 
@@ -37,7 +37,9 @@ export default function AdminLogin() {
         style={input}
       />
 
-      <button onClick={sendLink} style={btn}>Send Login Link</button>
+      <button onClick={sendLink} style={btn}>
+        Send Login Link
+      </button>
 
       <p>{status}</p>
     </div>
