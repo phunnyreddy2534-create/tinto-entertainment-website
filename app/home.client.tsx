@@ -6,66 +6,74 @@ export default function HomeClient() {
   const brand = useBrand()
 
   if (!brand) {
-    return <div style={{ minHeight: "100vh", background: "#000" }} />
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          background: "#000",
+        }}
+      />
+    )
   }
 
   return (
-    <main className="page">
-      <section
-        style={{
-          ...hero,
-          background: brand.background,
-        }}
-      >
-        <div
-          style={{
-            ...heroGlow,
-            background: `radial-gradient(circle at 50% 30%, ${brand.primary}55, transparent 60%)`,
-          }}
-        />
+    <main
+      style={{
+        minHeight: "100vh",
+        background: brand.background || "#000",
+        color: brand.text || "#fff",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center",
+        padding: "40px",
+      }}
+    >
+      <img
+        src={brand.logo || "/logo.png"}
+        style={{ width: 120, marginBottom: 20 }}
+      />
 
-        <img src={brand.logo || "/logo.png"} style={{ width: 140, marginBottom: 20 }} />
+      <h1 style={{ fontSize: 42, marginBottom: 12 }}>
+        Tinto Entertainment
+      </h1>
 
-        <h1
+      <p style={{ opacity: 0.8, marginBottom: 30 }}>
+        Premium Event & Festival Experience
+      </p>
+
+      <div style={{ display: "flex", gap: 16 }}>
+        <a
+          href="/upcoming"
           style={{
-            ...heroTitle,
-            color: brand.text,
-            textShadow: `0 0 40px ${brand.primary}`,
+            padding: "12px 22px",
+            background: brand.primary,
+            color: "#000",
+            textDecoration: "none",
+            borderRadius: 8,
+            fontWeight: 700,
           }}
         >
-          Tinto Entertainment
-        </h1>
+          Upcoming Events
+        </a>
 
-        <p style={{ ...heroSubtitle, color: brand.text }}>
-          Premium Event & Festival Experience
-        </p>
+        <a
+          href="/about"
+          style={{
+            padding: "12px 22px",
+            border: `2px solid ${brand.primary}`,
+            color: brand.primary,
+            textDecoration: "none",
+            borderRadius: 8,
+            fontWeight: 700,
+          }}
+        >
+          About
+        </a>
+      </div>
 
-        <div style={ctaWrap}>
-          <a
-            href="/upcoming/"
-            style={{
-              ...ctaPrimary,
-              background: `linear-gradient(135deg, ${brand.primary}, ${brand.accent})`,
-            }}
-          >
-            View Upcoming Events
-          </a>
-
-          <a
-            href="/about/"
-            style={{
-              ...ctaSecondary,
-              border: `1px solid ${brand.primary}`,
-              color: brand.primary,
-            }}
-          >
-            About Us
-          </a>
-        </div>
-      </section>
-
-      <section style={{ ...section, textAlign: "center" }}>
-        <h2 style={{ color: brand.primary }}>Contact</h2>
+      <div style={{ marginTop: 50, opacity: 0.8 }}>
         <p>📞 +91 9392267226</p>
         <p>📧 tintoentertainmentindia@gmail.com</p>
         <p>
@@ -78,68 +86,7 @@ export default function HomeClient() {
             @tintoentertainment
           </a>
         </p>
-      </section>
+      </div>
     </main>
   )
-}
-
-/* styles */
-
-const hero = {
-  minHeight: "90vh",
-  display: "flex",
-  flexDirection: "column" as const,
-  justifyContent: "center",
-  alignItems: "center",
-  textAlign: "center" as const,
-  position: "relative" as const,
-  overflow: "hidden",
-}
-
-const heroGlow = {
-  position: "absolute" as const,
-  inset: 0,
-  filter: "blur(100px)",
-}
-
-const heroTitle = {
-  fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
-  fontWeight: 900,
-  letterSpacing: "-0.04em",
-  zIndex: 1,
-}
-
-const heroSubtitle = {
-  marginTop: 12,
-  fontSize: "1.1rem",
-  opacity: 0.85,
-  zIndex: 1,
-}
-
-const ctaWrap = {
-  marginTop: 32,
-  display: "flex",
-  gap: 20,
-  zIndex: 1,
-}
-
-const ctaPrimary = {
-  padding: "14px 28px",
-  borderRadius: 14,
-  color: "#000",
-  fontWeight: 800,
-  textDecoration: "none",
-  boxShadow: "0 0 40px rgba(0,0,0,0.4)",
-}
-
-const ctaSecondary = {
-  padding: "14px 28px",
-  borderRadius: 14,
-  textDecoration: "none",
-}
-
-const section = {
-  padding: "80px 24px",
-  maxWidth: 1100,
-  margin: "0 auto",
 }
