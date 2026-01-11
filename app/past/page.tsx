@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useBrand } from "../../lib/useBrand";
 
 type Event = {
   title: string;
@@ -13,6 +14,7 @@ type Event = {
 
 export default function Past() {
   const [events, setEvents] = useState<Event[]>([]);
+  const brand = useBrand();
 
   useEffect(() => {
     fetch("/api/events")
@@ -25,7 +27,9 @@ export default function Past() {
 
   return (
     <div style={{ padding: 40 }}>
-      <h1 style={{ fontSize: 32, marginBottom: 30 }}>Past Events</h1>
+      <h1 style={{ fontSize: 36, color: brand?.accent }}>
+        Past Events
+      </h1>
 
       {events.length === 0 && <p>No past events yet.</p>}
 
@@ -37,20 +41,23 @@ export default function Past() {
             <div
               className="card"
               style={{
-                padding: 20,
-                marginBottom: 20,
-                borderRadius: 12,
-                background: "rgba(255,255,255,0.03)",
-                backdropFilter: "blur(10px)",
+                marginTop: 24,
+                padding: 28,
+                borderRadius: 18,
+                background: "rgba(0,0,0,0.6)",
+                backdropFilter: "blur(14px)",
                 cursor: "pointer",
                 transition: "0.4s",
-                boxShadow: "0 0 30px rgba(255, 0, 91, 0.2)"
+                border: `1px solid ${brand?.accent}33`,
+                boxShadow: `0 0 40px ${brand?.accent}22`,
               }}
             >
-              <h2>{e.title}</h2>
-              <p>📍 {e.place}</p>
-              <p>🎵 {e.type}</p>
-              <p style={{ opacity: 0.8 }}>{e.description}</p>
+              <h2 style={{ color: brand?.text }}>{e.title}</h2>
+              <p style={{ color: brand?.primary }}>📍 {e.place}</p>
+              <p style={{ color: brand?.accent }}>🎵 {e.type}</p>
+              <p style={{ opacity: 0.8, color: brand?.text }}>
+                {e.description}
+              </p>
             </div>
           </Link>
         );
