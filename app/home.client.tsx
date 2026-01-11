@@ -5,25 +5,32 @@ import { useBrand } from "../lib/useBrand"
 export default function HomeClient() {
   const brand = useBrand()
 
+  // CRITICAL: Prevent server crash while loading
+  if (!brand) return null
+
   return (
     <main className="page">
       <style>{`
-      @keyframes heroPulse {
-        0% { text-shadow: 0 0 0 ${brand.primary}00; }
-        50% { text-shadow: 0 0 50px ${brand.primary}; }
-        100% { text-shadow: 0 0 0 ${brand.primary}00; }
-      }
+        @keyframes heroPulse {
+          0% { text-shadow: 0 0 0 ${brand.primary}00; }
+          50% { text-shadow: 0 0 50px ${brand.primary}; }
+          100% { text-shadow: 0 0 0 ${brand.primary}00; }
+        }
       `}</style>
 
       <section style={{ ...hero, background: brand.background }}>
         <div
           style={{
             ...heroGlow,
-            background: \`radial-gradient(circle at 50% 30%, ${brand.primary}55, transparent 60%)\`,
+            background: `radial-gradient(circle at 50% 30%, ${brand.primary}55, transparent 60%)`,
           }}
         />
 
-        <img src={brand.logo || "/logo.png"} style={{ width: 140, marginBottom: 20 }} />
+        <img
+          src={brand.logo || "/logo.png"}
+          style={{ width: 140, marginBottom: 20 }}
+          alt="Tinto Logo"
+        />
 
         <h1
           style={{
@@ -44,7 +51,7 @@ export default function HomeClient() {
             href="/upcoming/"
             style={{
               ...ctaPrimary,
-              background: \`linear-gradient(135deg, ${brand.primary}, ${brand.accent})\`,
+              background: `linear-gradient(135deg, ${brand.primary}, ${brand.accent})`,
             }}
           >
             View Upcoming Events
@@ -54,7 +61,7 @@ export default function HomeClient() {
             href="/about/"
             style={{
               ...ctaSecondary,
-              border: \`1px solid ${brand.primary}\`,
+              border: `1px solid ${brand.primary}`,
               color: brand.primary,
             }}
           >
@@ -82,7 +89,7 @@ export default function HomeClient() {
   )
 }
 
-/* styles (unchanged) */
+/* ================== STYLES ================== */
 
 const hero = {
   minHeight: "90vh",
