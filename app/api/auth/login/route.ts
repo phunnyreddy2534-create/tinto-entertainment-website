@@ -1,43 +1,34 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY!);
-const ADMIN = process.env.ADMIN_EMAIL!;
+export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   const { email } = await req.json();
 
-  if (email !== ADMIN) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (email !== process.env.ADMIN_EMAIL) {
+    return NextResponse.json({ error: "Unauthorized email" }, { status: 401 });
   }
 
-  const token = Buffer.from(
-    `${email}|${Date.now()}`
-  ).toString("base64");
+  const loginLink = `${process.env.NEXT_PUBLIC_SITE_URL}/admin/dashboard`;
 
-  const loginLink =
-    `${process.env.NEXT_PUBLIC_SITE_URL}/admin/dashboard?token=${token}`;
+  const resend = new Resend(process.env.RESEND_API_KEY);
 
-  await resend.emails.send({
-    from: "Tinto Admin <onboarding@resend.dev>",
-    to: ADMIN,
-    subject: "Your Admin Login Link",
-    html: `
-      <h2>Tinto Entertainment</h2>
-      <p>Click below to access admin:</p>
-      <a href="${loginLink}" style="
-        padding:12px 20px;
-        background:#facc15;
-        color:#000;
-        font-weight:700;
-        border-radius:8px;
-        text-decoration:none;
-        display:inline-block">
-        Login to Admin Panel
-      </a>
-      <p>This link is private and secure.</p>
-    `,
-  });
+  try {
+    await resend.emails.send({
+      from: "Tinto Admin <onboarding@resend.dev>",
+      to: email,
+      subject: "Your Tinto Admin Login Link",
+      html: `
+        <h2>Tinto Entertainment Admin</h2>
+        <p>Click the link below to open your admin panel:</p>
+        <a href="${loginLink}">${loginLink}</a>
+      `,
+    });
 
-  return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true });
+  } catch (e) {
+    console.error(e);
+    return NextResponse.json({ error: "Email failed" }, { status: 500 });
+  }
 }
