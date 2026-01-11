@@ -19,16 +19,25 @@ const FALLBACK: Brand = {
   logo: "/logo.png",
 }
 
-export function useBrand(): Brand {
+export function useBrand() {
   const [brand, setBrand] = useState<Brand>(FALLBACK)
 
   useEffect(() => {
+    let alive = true
+
     fetch("/api/brand")
       .then(r => r.json())
-      .then(b => {
-        if (b && b.primary) setBrand(b)
+      .then(data => {
+        if (!alive) return
+        if (data && data.primary) setBrand(data)
       })
-      .catch(() => {})
+      .catch(() => {
+        // keep fallback
+      })
+
+    return () => {
+      alive = false
+    }
   }, [])
 
   return brand
