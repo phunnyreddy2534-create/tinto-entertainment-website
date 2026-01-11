@@ -117,3 +117,21 @@ export function setGallery(link: string) {
   ensureFiles()
   fs.writeFileSync(galleryFile, JSON.stringify({ link }, null, 2))
 }
+/* ================= AUDIT ================= */
+
+const auditFile = path.join(dataDir, "audit.json")
+
+export function getAudit() {
+  ensureFiles()
+  if (!fs.existsSync(auditFile)) {
+    fs.writeFileSync(auditFile, "[]")
+  }
+  return JSON.parse(fs.readFileSync(auditFile, "utf8"))
+}
+
+export function addAudit(entry: any) {
+  ensureFiles()
+  const logs = getAudit()
+  logs.unshift(entry)
+  fs.writeFileSync(auditFile, JSON.stringify(logs, null, 2))
+}
