@@ -3,54 +3,38 @@ import { useState } from "react";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
-  const [msg, setMsg] = useState("");
+  const [status, setStatus] = useState("");
 
   async function sendLink() {
-    setMsg("Sending link...");
+    setStatus("Sending...");
     const res = await fetch("/api/auth/login", {
       method: "POST",
       body: JSON.stringify({ email }),
     });
-    const data = await res.json();
-    setMsg(data.message);
+
+    if (res.ok) {
+      setStatus("Login link sent to your email.");
+    } else {
+      setStatus("Unauthorized email.");
+    }
   }
 
   return (
-    <div style={wrap}>
-      <h1>Tinto Admin Login</h1>
-      <input
-        style={input}
-        placeholder="tintoentertainmentindia@gmail.com"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <button style={btn} onClick={sendLink}>
-        Send Login Link
-      </button>
-      <p>{msg}</p>
+    <div style={{ minHeight: "100vh", display: "grid", placeItems: "center" }}>
+      <div>
+        <h1>Tinto Admin Login</h1>
+        <input
+          placeholder="Admin Email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          style={{ padding: 12, width: 260 }}
+        />
+        <br />
+        <button onClick={sendLink} style={{ marginTop: 12 }}>
+          Send Login Link
+        </button>
+        <p>{status}</p>
+      </div>
     </div>
   );
 }
-
-const wrap: React.CSSProperties = {
-  minHeight: "100vh",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-  gap: 20,
-};
-
-const input: React.CSSProperties = {
-  padding: 14,
-  width: 300,
-  borderRadius: 10,
-};
-
-const btn: React.CSSProperties = {
-  padding: "12px 24px",
-  background: "#facc15",
-  border: "none",
-  borderRadius: 10,
-  fontWeight: 700,
-};
