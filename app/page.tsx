@@ -1,11 +1,11 @@
-"use client";
+"use client"
 
-import { useBrand } from "../lib/useBrand";
+import { useBrand } from "../lib/useBrand"
+
+export const dynamic = "force-dynamic"
 
 export default function HomePage() {
-  const brand = useBrand();
-
-  if (!brand) return null;
+  const brand = useBrand()
 
   return (
     <main className="page">
@@ -17,7 +17,6 @@ export default function HomePage() {
       }
       `}</style>
 
-      {/* HERO */}
       <section style={{ ...hero, background: brand.background }}>
         <div
           style={{
@@ -26,7 +25,7 @@ export default function HomePage() {
           }}
         />
 
-        <img src={brand.logo} style={{ width: 140, marginBottom: 20 }} />
+        <img src={brand.logo || "/logo.png"} style={{ width: 140, marginBottom: 20 }} />
 
         <h1
           style={{
@@ -66,7 +65,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CONTACT */}
       <section style={{ ...section, textAlign: "center" }}>
         <h2 style={{ color: brand.primary }}>Contact</h2>
         <p>📞 +91 9392267226</p>
@@ -83,7 +81,7 @@ export default function HomePage() {
         </p>
       </section>
     </main>
-  );
+  )
 }
 
 /* ================== STYLES ================== */
@@ -97,34 +95,34 @@ const hero = {
   textAlign: "center" as const,
   position: "relative" as const,
   overflow: "hidden",
-};
+}
 
 const heroGlow = {
   position: "absolute" as const,
   inset: 0,
   filter: "blur(100px)",
-};
+}
 
 const heroTitle = {
   fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
   fontWeight: 900,
   letterSpacing: "-0.04em",
   zIndex: 1,
-};
+}
 
 const heroSubtitle = {
   marginTop: 12,
   fontSize: "1.1rem",
   opacity: 0.85,
   zIndex: 1,
-};
+}
 
 const ctaWrap = {
   marginTop: 32,
   display: "flex",
   gap: 20,
   zIndex: 1,
-};
+}
 
 const ctaPrimary = {
   padding: "14px 28px",
@@ -133,16 +131,16 @@ const ctaPrimary = {
   fontWeight: 800,
   textDecoration: "none",
   boxShadow: "0 0 40px rgba(0,0,0,0.4)",
-};
+}
 
 const ctaSecondary = {
   padding: "14px 28px",
   borderRadius: 14,
   textDecoration: "none",
-};
+}
 
 const section = {
   padding: "80px 24px",
   maxWidth: 1100,
   margin: "0 auto",
-};
+}
