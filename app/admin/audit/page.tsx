@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useBrand } from "../../lib/useBrand"
+import { useBrand } from "../../../lib/useBrand"
 
 type Log = {
   time: string
