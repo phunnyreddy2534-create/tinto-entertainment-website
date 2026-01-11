@@ -5,8 +5,9 @@ import { useBrand } from "../lib/useBrand"
 export default function HomeClient() {
   const brand = useBrand()
 
-  // CRITICAL: Prevent server crash while loading
-  if (!brand) return null
+  if (!brand) {
+    return <div style={{ minHeight: "100vh", background: "#000" }} />
+  }
 
   return (
     <main className="page">
@@ -26,11 +27,7 @@ export default function HomeClient() {
           }}
         />
 
-        <img
-          src={brand.logo || "/logo.png"}
-          style={{ width: 140, marginBottom: 20 }}
-          alt="Tinto Logo"
-        />
+        <img src={brand.logo || "/logo.png"} style={{ width: 140, marginBottom: 20 }} />
 
         <h1
           style={{
@@ -89,7 +86,7 @@ export default function HomeClient() {
   )
 }
 
-/* ================== STYLES ================== */
+/* styles */
 
 const hero = {
   minHeight: "90vh",
