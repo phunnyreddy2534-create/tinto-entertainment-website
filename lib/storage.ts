@@ -117,6 +117,3 @@ export function setGallery(link: string) {
   ensureFiles()
   fs.writeFileSync(galleryFile, JSON.stringify({ link }, null, 2))
 }
-
-
-trigger vercel rebuild
