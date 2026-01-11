@@ -7,6 +7,13 @@ export const dynamic = "force-dynamic"
 export default function HomePage() {
   const brand = useBrand()
 
+  // ⛑️ Prevent server crash while brand loads
+  if (!brand) {
+    return (
+      <div style={{ minHeight: "100vh", background: "#000" }} />
+    )
+  }
+
   return (
     <main className="page">
       <style>{`
