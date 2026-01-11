@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useBrand } from "../../../lib/useBrand"
+import { CSSProperties } from "react"
 
 type Event = {
   id: string
@@ -120,19 +121,21 @@ function Input({ label, onChange, type = "text" }: any) {
   return <input placeholder={label} type={type} onChange={e => onChange(e.target.value)} />
 }
 
-const card = (b: any) => ({
+/* Typed styles */
+
+const card = (b: any): CSSProperties => ({
   background: "rgba(0,0,0,0.6)",
   border: `1px solid ${b?.primary}33`,
   padding: 20,
   borderRadius: 16,
   marginBottom: 20,
   display: "flex",
-  flexDirection: "column",
+  flexDirection: "column",   // now correctly typed
   gap: 10,
   boxShadow: `0 0 40px ${b?.primary}22`,
 })
 
-const btn = (b: any) => ({
+const btn = (b: any): CSSProperties => ({
   background: `linear-gradient(135deg, ${b?.primary}, ${b?.accent})`,
   padding: "12px 20px",
   borderRadius: 12,
